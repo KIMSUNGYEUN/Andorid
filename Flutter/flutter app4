@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Layout()
+    );
+  }
+}
+
+class Layout extends StatelessWidget {
+  const Layout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar:  AppBar(
+        title: Text('Flutter example'),
+      ),
+      body: ListView(
+        children: [
+          Image.network(
+            'https://lh3.googleusercontent.com/-gjFXIRp-J28/YO5z_JkxifI/AAAAAAAABdg/wMB450q3F6EBsKQ943Cg-YG4U2ygjFIugCLcBGAsYHQ/image.png',
+            height: 240,
+            width: 600,
+            fit: BoxFit.cover,
+          )
+        ],
+      ),
+    );
+  }
+}

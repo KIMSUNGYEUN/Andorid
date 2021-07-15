@@ -17,8 +17,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Layout extends StatelessWidget {
+class Layout extends StatefulWidget {
   const Layout({Key? key}) : super(key: key);
+
+  @override
+  _LayoutState createState() => _LayoutState();
+}
+
+class _LayoutState extends State<Layout> {
+  bool star = true;
+  int count = 41;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +58,24 @@ class Layout extends StatelessWidget {
               ],
             ),
           ),
-          Icon(Icons.star,
+          IconButton(
+            icon: star
+            ? Icon(Icons.star)
+            : Icon(Icons.star_border),
             color: Colors.red,
+            onPressed: () {
+              setState(() {
+                if (star) {
+                  star = !star;
+                  count = count - 1;
+                } else {
+                  star = !star;
+                  count = count + 1;
+                }
+              });
+            },
           ),
-          Text('41'),
+          Text('$count'),
         ],
       ),
     );

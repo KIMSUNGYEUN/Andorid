@@ -107,4 +107,9 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
+  
+  startWatch(){
+    watch.start();
+    Timer.periodic(Duration(milliseconds: 100), updateTime);
+  }
 }

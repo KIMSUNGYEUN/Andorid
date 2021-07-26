@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               child: Text(
-                  '00:00:00:0000',
+                  elapsedTime,
                 style: TextStyle(
                   fontSize: 25
                 ),
@@ -54,14 +54,7 @@ class _HomePageState extends State<HomePage> {
               width: 100,
               height: 200,
               child: ListView(
-                children: [
-                  Text('Lab3'),
-                  Text('01:00:00:0000'),
-                  Text('Lab2'),
-                  Text('01:00:00:0000'),
-                  Text('Lab1'),
-                  Text('01:00:00:0000'),
-                ],
+                children:  lapTimes.map((time) => Text(time)).toList(),
               ),
             ),
             Container(
@@ -70,12 +63,26 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FloatingActionButton(
-                    onPressed: () {  },
-                    child: !watch.isRunning ? Icon(Icons.play_arrow) : Icon(Icons.stop)
+                    child: !watch.isRunning ? Icon(Icons.play_arrow) : Icon(Icons.stop),
+                    onPressed: () {
+                      if(!watch.isRunning){
+                        startWatch();
+                      }else{
+                        stopWatch();
+                      }
+                    },
+
                   ),
                   FloatingActionButton(
-                    onPressed: () {  },
-                    child: !watch.isRunning ? Text('Reset') : Text('Lab')
+                    child: !watch.isRunning ? Text('Reset') : Text('Lab'),
+                    onPressed: () {
+                      if(!watch.isRunning){
+                        resetWatch();
+                      }else{
+                        recordLapTime(elapsedTime);
+                      }
+                    },
+
                   ),
                 ],
               ),
@@ -99,7 +106,7 @@ class _HomePageState extends State<HomePage> {
 
     return "$hoursStr:$minutesStr:$secondsStr:$milliseconds";
   }
-  
+
   updateTime(Timer timer){
     if(watch.isRunning){
       setState(() {
@@ -107,9 +114,33 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-  
+
   startWatch(){
     watch.start();
     Timer.periodic(Duration(milliseconds: 100), updateTime);
   }
-}..
+
+  stopWatch(){
+    setState(() {
+      watch.stop();
+    });
+  }
+
+  resetWatch(){
+      watch.reset();
+      setTime();
+      lapTimes.clear();
+  }
+
+  setTime(){
+    var timeFar = watch.elapsedMilliseconds;
+    setState(() {
+      elapsedTime = transTime(timeFar);
+    });
+  }
+
+  recordLapTime(String time){
+    lapTimes.insert(0, 'Lab ${lapTimes.length + 1} $time');
+  }
+}
+

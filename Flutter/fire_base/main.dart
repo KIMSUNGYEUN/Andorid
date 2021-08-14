@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async{
@@ -32,20 +32,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    Widget liveData = StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('test')
+          .doc('test1')
+          .snapshots(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData) return LinearProgressIndicator();
+        return Text((snapshot.data as dynamic)['name']);
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('firebase'),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('test')
-            .doc('test1')
-            .snapshots(),
-        builder: (context, snapshot){
-          if(!snapshot.hasData) return LinearProgressIndicator();
-            return Text((snapshot.data as dynamic)['name']);
-        },
-      ),
+      body: Center(
+        child: Column(
+          children: [
+            RaisedButton(
+              child: Text('documentGets'),
+              onPressed: (){
+                documentGets();
+              },
+            )
+          ],
+        ),
+      )
     );
+  }
+
+  documentGets(){
+    FirebaseFirestore.instance
+        .collection('test')
+        .get()
+        .then((value){
+          for(DocumentSnapshot doc in value.docs){
+            print(doc.id);
+          }
+          print('Done documentGets');
+    });
   }
 }

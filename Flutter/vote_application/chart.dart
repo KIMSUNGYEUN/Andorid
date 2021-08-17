@@ -28,7 +28,14 @@ class _ChartState extends State<Chart> {
             series: <ChartSeries<ProgrammingData, String>>[
               ColumnSeries<ProgrammingData, String>(
                 color: Colors.deepPurpleAccent,
-                dataSource: snapshot.data.docs.map((chart) => )
+                dataSource: snapshot.data!.docs.map((chart) => ProgrammingData(
+                  chart['name'],
+                  chart['votes'],
+                )).toList(),
+
+                xValueMapper: (ProgrammingData data, _) => data.name, // ProgrammingData의 형태를 가지는data라는 내부변수를 만들어 name을 순차적으로 반환
+                yValueMapper: (ProgrammingData data, _) => data.votes, // ProgrammingData의 형태를 가지는data라는 내부변수를 만들어 votes를 순차적으로 반환
+                dataLabelSettings: DataLabelSettings(isVisible: true)
               )
             ],
           );

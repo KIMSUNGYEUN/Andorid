@@ -16,15 +16,34 @@ class _CandWidgetState extends State<CandWidget>{
   @override
   Widget build(BuildContext context){
     return Container(
-      width: widget.width *0.8,
-      height: widget.width * 0.1,
+      width: (widget.width as dynamic) * 0.8,
+      height: (widget.width as dynamic) * 0.1,
       padding: EdgeInsets.fromLTRB(
-        widget.width * 0.048,
-        widget.width * 0.024,
-        widget.width * 0.048, 
-        widget.width * 0.048
+        (widget.width as dynamic) * 0.048,
+        (widget.width as dynamic) * 0.024,
+        (widget.width as dynamic) * 0.048, 
+        (widget.width as dynamic) * 0.024,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.deepPurple),
+        color: (widget.answerState as dynamic) ? Colors.deepPurple : Colors.white,
+      ),
+      child: InkWell(
+        child: Text(
+          (widget.text as dynamic),
+          style: TextStyle(
+            fontSize: (widget.width as dynamic) * 0.035,
+            color: (widget.answerState as dynamic) ? Colors.white : Colors.black,
+          ),
         ),
-        decoration: BoxDecoration(),
+        onTap: (){
+          setState(() {
+            (widget.tap as dynamic)();
+            widget.answerState = !(widget.answerState as dynamic);
+          });
+        },
+      ),
     );
   }
 }

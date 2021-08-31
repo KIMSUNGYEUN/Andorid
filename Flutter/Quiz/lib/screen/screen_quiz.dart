@@ -104,7 +104,17 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: _answers[_currentIndex] == -1
                      ? null
                     : (){
-                        if(_currentIndex == (widget.quizs?.length as dynamic) - 1) {}
+                        if(_currentIndex == (widget.quizs?.length as dynamic) - 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultScreen(
+                                answers: _answers, 
+                                quizs: (widget.quizs as dynamic),
+                              ),
+                            ),
+                          );
+                        }
                         else{
                           _answerState = [false, false, false, false];
                           _currentIndex +=1;

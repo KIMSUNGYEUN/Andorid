@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
+    int status = 0;
     TextView textStatus;
     Button btnParied, btnSearch, btnSend;
     ListView listView;
@@ -50,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get permission
+        // Get permission , 위치권한 허용 코드
         String[] permission_list = {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         };
         ActivityCompat.requestPermissions(MainActivity.this, permission_list, 1);
 
-        // Enable bluetooth
+        // Enable bluetooth, 블루투스 활성화
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!btAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         pairedDevices = btAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
+            //기존에 페어링된 기기가 있으면. 페어링된 각 장치의 이름과 주소를 가져옵니다.
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButtonSearch(View view){
         // Check if the device is already discovering
+        // 장치가 이미 검색중 인 장치인지 확인
         if(btAdapter.isDiscovering()){
             btAdapter.cancelDiscovery();
         } else {
@@ -114,9 +117,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Send string "a"
+    // Send string "문이 닫혔습니다."/"문이 열렸습니다."
     public void onClickButtonSend(View view){
-        if(connectedThread!=null){ connectedThread.write("a"); }
+        if(connectedThread!=null && status != 1){
+            connectedThread.write("close");
+            Toast.makeText(getApplicationContext(), "문이 닫혔습니다.", Toast.LENGTH_SHORT).show();
+            status = 1;
+        }
+        else if(connectedThread!=null && status != 0){
+            connectedThread.write("open");
+            Toast.makeText(getApplicationContext(), "문이 열렸습니다.", Toast.LENGTH_SHORT).show();
+            status = 0;
+        }
     }
 
     // Create a BroadcastReceiver for ACTION_FOUND.
@@ -151,14 +163,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), btArrayAdapter.getItem(position), Toast.LENGTH_SHORT).show();
 
             textStatus.setText("try...");
-
+            //선택되 기기의 이름과 주소를 가져옴
             final String name = btArrayAdapter.getItem(position); // get name
             final String address = deviceAddressArray.get(position); // get address
             boolean flag = true;
-
+            // 가져온 주소로 BluetoothDevice를 만듬
             BluetoothDevice device = btAdapter.getRemoteDevice(address);
 
             // create & connect socket
+            // 그 기기의 소켓 생성 및 연결 시도
             try {
                 btSocket = createBluetoothSocket(device);
                 btSocket.connect();
@@ -169,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // start bluetooth communication
+            // 블루투스 통신 시작
             if(flag){
                 textStatus.setText("connected to "+name);
                 connectedThread = new ConnectedThread(btSocket);

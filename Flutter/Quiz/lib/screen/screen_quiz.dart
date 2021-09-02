@@ -2,11 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:quize_app_test/modle/model_quiz.dart';
+import 'package:quize_app_test/screen/screen_result.dart';
 import 'package:quize_app_test/widget/widget_candidate.dart';
 
 class QuizScreen extends StatefulWidget {
-  List<Quiz>? quizs;
-  QuizScreen({this.quizs});
+  List<Quiz> quizs;
+  QuizScreen({required this.quizs});
   //const QuizScreen({ Key? key }) : super(key: key);
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -38,7 +39,7 @@ class _QuizScreenState extends State<QuizScreen> {
               controller: _controller,
               physics: NeverScrollableScrollPhysics(),
               loop: false,
-              itemCount: widget.quizs?.length,
+              itemCount: widget.quizs.length,
               itemBuilder: (BuildContext context, int index) {
                 return _buildQuizCard((widget.quizs as dynamic)[index], width, height);
               },
@@ -96,21 +97,21 @@ class _QuizScreenState extends State<QuizScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: RaisedButton(
-                  child: _currentIndex == (widget.quizs?.length as dynamic) - 1
+                  child: _currentIndex == (widget.quizs.length as dynamic) - 1
                       ? Text('결과보기')
                       : Text('다음문제'),
                   textColor: Colors.white,
                   color: Colors.deepPurple,
                   onPressed: _answers[_currentIndex] == -1
                      ? null
-                    : (){
-                        if(_currentIndex == (widget.quizs?.length as dynamic) - 1) {
+                    : () {
+                        if(_currentIndex == widget.quizs.length - 1) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ResultScreen(
                                 answers: _answers, 
-                                quizs: (widget.quizs as dynamic),
+                                quizs: widget.quizs.cast<int>(),
                               ),
                             ),
                           );
@@ -136,7 +137,7 @@ class _QuizScreenState extends State<QuizScreen> {
       _children.add(
         CandWidget(
           index: i,
-          text: quiz.candidates?[i],
+          text: quiz.candidates![i],
           width: width,
           answerState: _answerState[i],
           tap: () {

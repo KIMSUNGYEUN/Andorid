@@ -14,12 +14,12 @@ void setup() {
 
 void loop() {
   while(bluetooth.available()){
-    //Serial.write(bluetooth.read()); // 시리얼 모니터에 데이터 출력
-
-    if(bluetooth.read() == 'c'){
+    char data = bluetooth.read();
+    //Serial.print(bluetooth.read()); // 시리얼 모니터에 데이터 출력
+    if(data == 'c'){
         servo.write(90); 
     }
-    else if(bluetooth.read() == 'o'){
+    else if(data == 'o'){
         servo.write(0);
     }
   }

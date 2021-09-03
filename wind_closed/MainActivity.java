@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
     // Send string "문이 닫혔습니다."/"문이 열렸습니다."
     public void onClickButtonSend(View view){
         if(connectedThread!=null && status != 1){
-            connectedThread.write("close");
+            connectedThread.write("c");
             Toast.makeText(getApplicationContext(), "문이 닫혔습니다.", Toast.LENGTH_SHORT).show();
             status = 1;
         }
         else if(connectedThread!=null && status != 0){
-            connectedThread.write("open");
+            connectedThread.write("o");
             Toast.makeText(getApplicationContext(), "문이 열렸습니다.", Toast.LENGTH_SHORT).show();
             status = 0;
         }

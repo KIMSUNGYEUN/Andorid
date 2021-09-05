@@ -69,4 +69,4 @@ public class ConnectedThread extends Thread {
         } catch (IOException e) {
         }
     }
-}
+}// 쓰레드 연결

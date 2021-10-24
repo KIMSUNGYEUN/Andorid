@@ -1,0 +1,45 @@
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="mOnClicked"
+            android:background="#000000"/>
+        <Button
+            android:id="@+id/red“
+              …………………….
+            android:background="#ff0000"/>
+        <Button
+            android:id="@+id/blue“
+             ……………………….
+            android:background="#0000ff"/>
+        <Button
+            android:id="@+id/green“
+             ……………………….
+             android:background="#008000"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선굵기: "/>
+
+        <RadioGroup
+            android:id="@+id/widList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wid1"
+                android:text="1"
+                android:onClick="mOnClicked2"/>
